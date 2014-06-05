@@ -28,7 +28,7 @@ class DNS2D {
      * path to save png in getBarcodePNGPath
      * @var <type>
      */
-    protected $store_path;
+    protected $store_path = '';
 
     /**
      * Return a SVG string representation of barcode.
@@ -267,7 +267,7 @@ class DNS2D {
             }
             $y += $h;
         }
-        $file_name=\Str::slug($code);
+        $file_name = \Str::slug($code);
         $save_file = $this->checkfile($this->store_path . $file_name . ".png");
 
         if ($imagick) {
@@ -300,25 +300,25 @@ class DNS2D {
                     break;
                 }
             case 'PDF417': { // PDF417 (ISO/IEC 15438:2006)
-                    if (!isset($mode[1]) OR ($mode[1] === '')) {
+                    if (!isset($mode[1]) OR ( $mode[1] === '')) {
                         $aspectratio = 2; // default aspect ratio (width / height)
                     } else {
                         $aspectratio = floatval($mode[1]);
                     }
-                    if (!isset($mode[2]) OR ($mode[2] === '')) {
+                    if (!isset($mode[2]) OR ( $mode[2] === '')) {
                         $ecl = -1; // default error correction level (auto)
                     } else {
                         $ecl = intval($mode[2]);
                     }
                     // set macro block
                     $macro = array();
-                    if (isset($mode[3]) AND ($mode[3] !== '') AND isset($mode[4]) AND ($mode[4] !== '') AND isset($mode[5]) AND ($mode[5] !== '')) {
+                    if (isset($mode[3]) AND ( $mode[3] !== '') AND isset($mode[4]) AND ( $mode[4] !== '') AND isset($mode[5]) AND ( $mode[5] !== '')) {
                         $macro['segment_total'] = intval($mode[3]);
                         $macro['segment_index'] = intval($mode[4]);
                         $macro['file_id'] = strtr($mode[5], "\xff", ',');
                         for ($i = 0; $i < 7; ++$i) {
                             $o = $i + 6;
-                            if (isset($mode[$o]) AND ($mode[$o] !== '')) {
+                            if (isset($mode[$o]) AND ( $mode[$o] !== '')) {
                                 // add option
                                 $macro['option_' . $i] = strtr($mode[$o], "\xff", ',');
                             }
@@ -330,7 +330,7 @@ class DNS2D {
                     break;
                 }
             case 'QRCODE': { // QR-CODE
-                    if (!isset($mode[1]) OR (!in_array($mode[1], array('L', 'M', 'Q', 'H')))) {
+                    if (!isset($mode[1]) OR ( !in_array($mode[1], array('L', 'M', 'Q', 'H')))) {
                         $mode[1] = 'L'; // Ddefault: Low error correction
                     }
                     $barcode = new QRcode($code, strtoupper($mode[1]));

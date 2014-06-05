@@ -24,7 +24,7 @@ class DNS1D {
      * path to save png in getBarcodePNGPath
      * @var <type>
      */
-    protected $store_path;
+    protected $store_path = '';
 
     /**
      * Return a SVG string representation of barcode.
@@ -217,7 +217,7 @@ class DNS1D {
             }
             $x += $bw;
         }
-        $file_name=\Str::slug($code);
+        $file_name = \Str::slug($code);
         $save_file = $this->checkfile($this->store_path . $file_name . ".png");
 
         if ($imagick) {
@@ -871,7 +871,7 @@ class DNS1D {
         $k = 0;
         for ($i = 0; $i < $len; ++$i) {
             $w += 1;
-            if (($i == ($len - 1)) OR (($i < ($len - 1)) AND ($seq{$i} != $seq{($i + 1)}))) {
+            if (($i == ($len - 1)) OR ( ($i < ($len - 1)) AND ( $seq{$i} != $seq{($i + 1)}))) {
                 if ($seq{$i} == '1') {
                     $t = true; // bar
                 } else {
@@ -925,7 +925,7 @@ class DNS1D {
         for ($i = 0; $i < $clen; $i = ($i + 2)) {
             $char_bar = $code{$i};
             $char_space = $code{$i + 1};
-            if ((!isset($chr[$char_bar])) OR (!isset($chr[$char_space]))) {
+            if ((!isset($chr[$char_bar])) OR ( !isset($chr[$char_space]))) {
                 // invalid character
                 return false;
             }
@@ -1091,9 +1091,9 @@ class DNS1D {
                     for ($i = 0; $i < $len; ++$i) {
                         $char = $code{$i};
                         $char_id = ord($char);
-                        if (($char_id >= 241) AND ($char_id <= 244)) {
+                        if (($char_id >= 241) AND ( $char_id <= 244)) {
                             $code_data[] = $fnc_a[$char_id];
-                        } elseif (($char_id >= 0) AND ($char_id <= 95)) {
+                        } elseif (($char_id >= 0) AND ( $char_id <= 95)) {
                             $code_data[] = strpos($keys_a, $char);
                         } else {
                             return false;
@@ -1106,9 +1106,9 @@ class DNS1D {
                     for ($i = 0; $i < $len; ++$i) {
                         $char = $code{$i};
                         $char_id = ord($char);
-                        if (($char_id >= 241) AND ($char_id <= 244)) {
+                        if (($char_id >= 241) AND ( $char_id <= 244)) {
                             $code_data[] = $fnc_b[$char_id];
-                        } elseif (($char_id >= 32) AND ($char_id <= 127)) {
+                        } elseif (($char_id >= 32) AND ( $char_id <= 127)) {
                             $code_data[] = strpos($keys_b, $char);
                         } else {
                             return false;
@@ -1143,7 +1143,7 @@ class DNS1D {
                     // get numeric sequences (if any)
                     $numseq = array();
                     preg_match_all('/([0-9]{4,})/', $code, $numseq, PREG_OFFSET_CAPTURE);
-                    if (isset($numseq[1]) AND !empty($numseq[1])) {
+                    if (isset($numseq[1]) AND ! empty($numseq[1])) {
                         $end_offset = 0;
                         foreach ($numseq[1] as $val) {
                             $offset = $val[1];
@@ -1174,7 +1174,7 @@ class DNS1D {
                                     if ($key == 0) {
                                         $startid = 103;
                                     } elseif ($sequence[($key - 1)][0] != 'A') {
-                                        if (($seq[2] == 1) AND ($key > 0) AND ($sequence[($key - 1)][0] == 'B') AND (!isset($sequence[($key - 1)][3]))) {
+                                        if (($seq[2] == 1) AND ( $key > 0) AND ( $sequence[($key - 1)][0] == 'B') AND ( !isset($sequence[($key - 1)][3]))) {
                                             // single character shift
                                             $code_data[] = 98;
                                             // mark shift
@@ -1186,7 +1186,7 @@ class DNS1D {
                                     for ($i = 0; $i < $seq[2]; ++$i) {
                                         $char = $seq[1]{$i};
                                         $char_id = ord($char);
-                                        if (($char_id >= 241) AND ($char_id <= 244)) {
+                                        if (($char_id >= 241) AND ( $char_id <= 244)) {
                                             $code_data[] = $fnc_a[$char_id];
                                         } else {
                                             $code_data[] = strpos($keys_a, $char);
@@ -1197,7 +1197,7 @@ class DNS1D {
                             case 'B': {
                                     if ($key == 0) {
                                         $tmpchr = ord($seq[1]{0});
-                                        if (($seq[2] == 1) AND ($tmpchr >= 241) AND ($tmpchr <= 244) AND isset($sequence[($key + 1)]) AND ($sequence[($key + 1)][0] != 'B')) {
+                                        if (($seq[2] == 1) AND ( $tmpchr >= 241) AND ( $tmpchr <= 244) AND isset($sequence[($key + 1)]) AND ( $sequence[($key + 1)][0] != 'B')) {
                                             switch ($sequence[($key + 1)][0]) {
                                                 case 'A': {
                                                         $startid = 103;
@@ -1217,7 +1217,7 @@ class DNS1D {
                                             $startid = 104;
                                         }
                                     } elseif ($sequence[($key - 1)][0] != 'B') {
-                                        if (($seq[2] == 1) AND ($key > 0) AND ($sequence[($key - 1)][0] == 'A') AND (!isset($sequence[($key - 1)][3]))) {
+                                        if (($seq[2] == 1) AND ( $key > 0) AND ( $sequence[($key - 1)][0] == 'A') AND ( !isset($sequence[($key - 1)][3]))) {
                                             // single character shift
                                             $code_data[] = 98;
                                             // mark shift
@@ -1229,7 +1229,7 @@ class DNS1D {
                                     for ($i = 0; $i < $seq[2]; ++$i) {
                                         $char = $seq[1]{$i};
                                         $char_id = ord($char);
-                                        if (($char_id >= 241) AND ($char_id <= 244)) {
+                                        if (($char_id >= 241) AND ( $char_id <= 244)) {
                                             $code_data[] = $fnc_b[$char_id];
                                         } else {
                                             $code_data[] = strpos($keys_b, $char);
@@ -1295,7 +1295,7 @@ class DNS1D {
         // get A sequences (if any)
         $numseq = array();
         preg_match_all('/([\0-\31])/', $code, $numseq, PREG_OFFSET_CAPTURE);
-        if (isset($numseq[1]) AND !empty($numseq[1])) {
+        if (isset($numseq[1]) AND ! empty($numseq[1])) {
             $end_offset = 0;
             foreach ($numseq[1] as $val) {
                 $offset = $val[1];
@@ -1372,7 +1372,7 @@ class DNS1D {
         if ($upce) {
             // convert UPC-A to UPC-E
             $tmp = substr($code, 4, 3);
-            if (($tmp == '000') OR ($tmp == '100') OR ($tmp == '200')) {
+            if (($tmp == '000') OR ( $tmp == '100') OR ( $tmp == '200')) {
                 // manufacturer code ends in 000, 100, or 200
                 $upce_code = substr($code, 2, 2) . substr($code, 9, 3) . substr($code, 4, 1);
             } else {
@@ -1497,7 +1497,7 @@ class DNS1D {
         $w = 0;
         for ($i = 0; $i < $clen; ++$i) {
             $w += 1;
-            if (($i == ($clen - 1)) OR (($i < ($clen - 1)) AND ($seq{$i} != $seq{($i + 1)}))) {
+            if (($i == ($clen - 1)) OR ( ($i < ($clen - 1)) AND ( $seq{$i} != $seq{($i + 1)}))) {
                 if ($seq{$i} == '1') {
                     $t = true; // bar
                 } else {
