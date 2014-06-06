@@ -267,7 +267,7 @@ class DNS2D {
             }
             $y += $h;
         }
-        $file_name = \Str::slug($code);
+        $file_name = $this->slug($code);
         $save_file = $this->checkfile($this->store_path . $file_name . ".png");
 
         if ($imagick) {
@@ -276,7 +276,7 @@ class DNS2D {
         }
         if (ImagePng($png, $save_file)) {
             imagedestroy($png);
-            return str_replace(public_path(), '', $save_file);
+            return str_replace($this->store_path, '', $save_file);
         } else {
             imagedestroy($png);
             return $code;
@@ -359,6 +359,21 @@ class DNS2D {
     public function setStorPath($path) {
         $this->store_path = $path;
         return $this;
+    }
+
+    function slug($title, $separator = '-') {
+        // Convert all dashes/underscores into separator
+        $flip = $separator == '-' ? '_' : '-';
+
+        $title = preg_replace('![' . preg_quote($flip) . ']+!u', $separator, $title);
+
+        // Remove all characters that are not the separator, letters, numbers, or whitespace.
+        $title = preg_replace('![^' . preg_quote($separator) . '\pL\pN\s]+!u', '', mb_strtolower($title));
+
+        // Replace all separator characters and whitespace by a single separator
+        $title = preg_replace('![' . preg_quote($separator) . '\s]+!u', $separator, $title);
+
+        return trim($title, $separator);
     }
 
 }
