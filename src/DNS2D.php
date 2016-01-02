@@ -188,7 +188,7 @@ class DNS2D {
             imagedestroy($png);
         }
         $image = ob_get_clean();
-        $image = base64_encode($image);
+        // $image = base64_encode($image);
         //$image = 'data:image/png;base64,' . base64_encode($image);
         return $image;
     }
